@@ -25,7 +25,10 @@ df_small <- df[c('GAGEBRTH', 'BIRTHWT','BIRTHLEN', 'BIRTHHC', 'HAZ', 'WHZ', 'BAZ
 png(file="demo_plot.png")
 pairs(df_small)
 dev.off()
+```
 
+### Store figure in Synapse
+```{r}
 plotFileEntity <- File(path="demo_plot.png", parentId=RESULT_FOLDER)
 plotFileEntity <- synStore(plotFileEntity, 
                            used=dataFile, 
