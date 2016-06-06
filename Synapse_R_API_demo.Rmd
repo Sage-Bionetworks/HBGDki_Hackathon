@@ -1,0 +1,40 @@
+# Getting started with Synapse using R
+
+Import the synapse R client and log in to Synapse using locally stored credentials. New users have to supply username and password or their Synapse session API key but can stash these using 
+
+synapseLogin(<username>, <password>, rememberbe=T)
+
+```{r}
+library(synapseClient)
+synapseLogin()
+
+RESULT_FOLDER = 'syn6134567'
+DATA_FILE = 'syn6115761'
+```
+
+
+#### Fetch the dataset for Problem 2 and read into data frame
+```{r}
+dataFile <- synGet(DATA_FILE)
+df <- read.delim(dataFile@filePath, header=T, sep=',')
+```
+
+#### Visualize correlation structure between certain variables
+```{r}
+df_small <- df[c('GAGEBRTH', 'BIRTHWT','BIRTHLEN', 'BIRTHHC', 'HAZ', 'WHZ', 'BAZ')]
+png(file="demo_plot.png")
+pairs(df_small)
+dev.off()
+
+plotFileEntity <- File(path="demo_plot.png", parentId=RESULT_FOLDER)
+plotFileEntity <- synStore(plotFileEntity, 
+                           used=dataFile, 
+                           executed='https://github.com/Sage-Bionetworks/HBGDki_Hackathon/blob/master/Synapse_R_API_demo.Rmd')
+```
+
+
+#### See content in Synapse
+```{r}
+onWeb(plotFileEntity)
+```
+
